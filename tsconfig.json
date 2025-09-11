@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@app/prooducts/*": [
+        "apps/prooducts/src/*"
+      ],
+      "@app/admin/*": [
+        "apps/admin/src/*"
+      ],
+      "@app/catalog/*": [
+        "apps/catalog/src/*"
+      ],
+      "@app/content-manager/*": [
+        "apps/content-manager/src/*"
+      ],
+      "@app/warehouse/*": [
+        "apps/warehouse/src/*"
+      ],
+      "@app/constants": [
+        "libs/constants/src"
+
+    
+      ],
+      "@app/constants/*": [
+        "libs/constants/src/*"                                                                                                        
+
+        
+      ],
+      "@app/dto": [
+        "libs/dto/src"
+      ],
+      "@app/dto/*": [
+        "libs/dto/src/*"
+      ],
+      
+
+    }
+  },
+
+}
+
+
+
+

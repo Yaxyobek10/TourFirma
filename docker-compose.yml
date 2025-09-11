@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:15
+    container_name: tour_agent_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5544:5432"
+    networks:
+      - backend_5005
+    volumes:
+      - db_data_5005:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 2s
+      timeout: 2s
+      retries: 2
+
+  redis:
+    image: redis:alpine
+    container_name: tour_agent_redis
+    ports:
+      - "6380:6379"
+    networks:
+      - backend_5005
+
+  main-service:
+    build: .
+    container_name: tour_agent_backend
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      DATABASE_URL: ${DATABASE_URL}
+    ports:
+      - "5005:5005"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - backend_5005
+
+networks:
+  backend_5005:
+    driver: bridge
+
+volumes:
+  db_data_5005:
+
+
