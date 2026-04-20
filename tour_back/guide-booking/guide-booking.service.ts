@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, LessThan } from 'typeorm';
-import { GuideBooking } from './entity/guide-booking.entity';
+import { GuideBooking } from './entities/guide-booking.entity';
 import { BookingStatus } from '../common/enum/booking-status.enum';
 import { CreateGuideBookingDto } from './dto/guide-booking.dto';
 import { Guide } from '../guides/entities/guide.entity';
@@ -94,7 +94,7 @@ export class GuideBookingsService {
    */
   async confirmPayment(bookingId: number) {
     return await this.bookingRepo.manager.transaction(async (manager) => {
-      const booking = await manager.findOne(GuideBooking, {
+      const booking: GuideBooking | null = await manager.findOne(GuideBooking, {
         where: { id: bookingId },
         relations: ['guide', 'tourist'],
       });

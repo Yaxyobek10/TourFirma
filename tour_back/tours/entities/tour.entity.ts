@@ -14,7 +14,7 @@ import { TourImage } from '../../config/tour-images/entities/tour-image.entity';
 import { Booking } from '../../bookings/entities/booking.entity';
 import { Currency } from '../../common/enum/currency.enum';
 import { TourType } from '../../common/enum/tour-type.enum';
-import { TourReview } from '../../tour-reviews/entity/tour-review.entity';
+import { TourReview } from '../../tour-reviews/entities/tour-review.entity';
 
 
 @Entity('tours')
