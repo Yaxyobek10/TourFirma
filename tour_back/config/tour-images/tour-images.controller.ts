@@ -1,11 +1,11 @@
 import { Controller, Post, Patch, Body, Param, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiParam, ApiBody } from '@nestjs/swagger';
 import { TourImagesService } from './tour-images.service';
-import { CreateTourImageDto } from './tour-image.dto/create-tour.image.dto';
-import { JwtAuthGuard } from 'tour_back/auth/jwt-auth.guard';
-import { RolesGuard } from 'tour_back/auth/roles.guard';
-import { Roles } from 'tour_back/auth/roles.decarator';
-import { UserRole } from 'tour_back/users/entities/user.entity';
+import { CreateTourImageDto } from './dto/create-tour-image.dto';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { RolesGuard } from '../../auth/roles.guard';
+import { Roles } from '../../auth/roles.decorator';
+import { UserRole } from '../../common/enum/user-role.enum';
 
 @ApiTags('Tour Images')
 @ApiBearerAuth()

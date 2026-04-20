@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In, FindManyOptions, MoreThanOrEqual, LessThanOrEqual } from 'typeorm';
-import { Transport, TransportCategory } from './entities/transport-entity';
+import { Transport, TransportCategory } from './entities/transport.entity';
 import { CreateTransportDto } from './dto/create-transport.dto';
 import { UpdateTransportDto } from './dto/update-transport.dto';
-import { TourFirmaProfile } from '../tourfirma/entities/tourfirma-entity';
-import { TransportBookingItem } from '../transport-bookings/entities/transport-booking.Item.entity';
+import { TourFirmaProfile } from '../tourfirma/entities/tourfirma.entity';
+import { TransportBookingItem } from '../transport-bookings/entities/transport-booking-item.entity';
 
 @Injectable()
 export class TransportService {
@@ -137,3 +137,9 @@ export class TransportService {
     await this.transportRepo.save(transport);
   }
 }
+
+
+
+
+
+

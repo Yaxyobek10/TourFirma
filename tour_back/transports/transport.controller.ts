@@ -16,10 +16,10 @@ import { CreateTransportDto } from './dto/create-transport.dto';
 import { UpdateTransportDto } from './dto/update-transport.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decarator';
-import { UserRole } from '../users/entities/user.entity';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../common/enum/user-role.enum';
 import { ApiBearerAuth, ApiTags, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
-import { TransportCategory } from './entities/transport-entity';
+import { TransportCategory } from './entities/transport.entity';
 
 @ApiTags('Transports')
 @ApiBearerAuth()
@@ -45,7 +45,7 @@ export class TransportController {
 
   /** GET ALL TRANSPORTS with query filters and pagination */
 @Get()
-@Roles(UserRole.TOURFIRMA, UserRole.TOURIST) // ikkala role uchun
+@Roles(UserRole.TOURFIRMA, UserRole.TOURIST) 
 @ApiQuery({ name: 'type', required: false })
 @ApiQuery({ name: 'category', required: false, enum: TransportCategory })
 @ApiQuery({ name: 'tags', required: false, type: [String] })

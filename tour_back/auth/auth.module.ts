@@ -5,12 +5,17 @@ import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
-import { GuidesModule } from 'tour_back/guides/guides.module';
+import { GuidesModule } from '../guides/guides.module';
+import { TouristsModule } from '../tourist-profiles/tourist.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from '../users/entities/user.entity';
 
 @Module({
   imports: [
     UsersModule,
     GuidesModule,
+    TouristsModule,
+    TypeOrmModule.forFeature([User]),
     PassportModule.register({ defaultStrategy: 'jwt' }), 
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'supersecret',

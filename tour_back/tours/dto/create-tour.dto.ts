@@ -9,8 +9,11 @@ import {
   IsInt,
   IsEnum,
   Min,
+  ValidateIf,
+  Max,
 } from 'class-validator';
-import { TourCurrency } from '../entities/tour.entity'; // ✅ Enum shu yerdan olinadi
+import { Currency } from '../../common/enum/currency.enum'; 
+import { TourType } from '../../common/enum/tour-type.enum';
 
 export class CreateTourDto {
   @ApiProperty({ example: '3 days, 2 nights luxury trip' })
@@ -26,9 +29,9 @@ export class CreateTourDto {
   @Min(0)
   price: number;
 
-  @ApiProperty({ example: 'USD', enum: TourCurrency, description: 'Tour narxi valyutasi' })
-  @IsEnum(TourCurrency) // ✅ endi entity bilan bir xil
-  currency: TourCurrency;
+  @ApiProperty({ example: 'USD', enum: Currency, description: 'Tour narxi valyutasi' })
+  @IsEnum(Currency) 
+  currency: Currency;
 
   @ApiProperty({ example: '3 days / 2 nights' })
   @IsString()
@@ -52,15 +55,27 @@ export class CreateTourDto {
   @IsString()
   coverImage?: string;
 
-  @ApiProperty({ example: 10, description: 'Qancha joy bor' })
-  @IsInt()
-  @Min(0)
-  availableSlots: number;
+
 
   @ApiProperty({ example: 30, description: 'Maksimal odam soni' })
   @IsInt()
   @Min(1)
+  @Max(1000, { message: 'MaxPeople juda katta bo\'lishi mumkin emas (max 1000).' })
   maxPeople: number;
+
+
+
+  @ApiProperty({ example: 30, description: 'Bo\'sh joylar soni' })
+  @IsInt()
+  @Min(0)
+  @ValidateIf((o) => o.availableSlots <= o.maxPeople)
+  availableSlots: number;
+
+
+  @ApiProperty({ example: 'ECO', enum: TourType, description: 'Sayohat turi' })
+  @IsEnum(TourType)
+  tourType: TourType;
+
 
   @ApiProperty({ example: 0, required: false })
   @IsOptional()

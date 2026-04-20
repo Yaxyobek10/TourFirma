@@ -3,7 +3,7 @@ import { ToursService } from './tours.service';
 import { ToursController } from './tours.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tour } from './entities/tour.entity';
-import { TourImage } from '../config/tour-images/tour-images.entity/tour.image.entity';
+import { TourImage } from '../config/tour-images/entities/tour-image.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Tour, TourImage])],

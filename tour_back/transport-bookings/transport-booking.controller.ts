@@ -13,8 +13,8 @@ import { TransportBookingService } from './transport-booking.service';
 import { CreateTransportBookingDto } from './dto/create-transport-booking.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decarator';
-import { UserRole } from '../users/entities/user.entity';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../common/enum/user-role.enum';
 import { ApiBearerAuth, ApiTags, ApiBody, ApiParam } from '@nestjs/swagger';
 
 @ApiTags('Transport Bookings')

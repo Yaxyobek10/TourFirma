@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNumber, IsEnum, IsOptional, Min, IsInt } from 'class-validator';
 import { BookingStatus } from '../entities/booking.entity';
-import { TourCurrency } from '../../tours/entities/tour.entity';
+import { Currency } from '../../common/enum/currency.enum';
 
 
 
@@ -19,13 +19,13 @@ export class CreateBookingDto {
 
   @ApiProperty({
     example: 'USD',
-    enum: TourCurrency,
+    enum: Currency,
     description: 'Booking valyutasi (agar tanlanmasa, Tour valyutasi olinadi)',
     required: false,
   })
   @IsOptional()
-  @IsEnum(TourCurrency)
-  currency?: TourCurrency;
+  @IsEnum(Currency)
+  currency?: Currency;
 }
 
 export class UpdateBookingDto {

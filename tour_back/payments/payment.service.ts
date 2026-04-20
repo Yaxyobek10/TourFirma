@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Payment, PaymentMethod, PaymentStatus } from './entities/payment-entity';
+import { Payment, PaymentMethod, PaymentStatus } from './entities/payment.entity';
 import { Booking, BookingStatus } from '../bookings/entities/booking.entity';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
-import { UserRole } from '../users/entities/user.entity';
+import { UserRole } from '../common/enum/user-role.enum';
 import { BookingHistory } from '../bookings/entities/booking-history.entity';
-import { BookingAction } from '../bookings/entities/booking-history.entity';
+import { BookingAction } from '../common/enum/booking-action.enum';
 import { PaymeService } from '../common/gateways/payme.service';
 import { ClickService } from '../common/gateways/click.service';
 import { ConfigService } from '@nestjs/config';
@@ -105,8 +105,6 @@ async create(dto: CreatePaymentDto, userId: number) {
     }
     let gatewayResponse: { redirectUrl?: string } | undefined;
     if (dto.method === PaymentMethod.ONLINE) {
-
-      // Qoshimcha tolov tizimlari qoshish uchun kerak boladigan logika
       const gateway = this.configService.get<'click' | 'payme'>('PAYMENT_GATEWAY');
       if (gateway === 'payme') {
         gatewayResponse = await this.paymeService.createTransaction(dto.amount, dto.bookingId);

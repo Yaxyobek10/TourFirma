@@ -16,6 +16,10 @@ import { TourImagesModule } from './config/tour-images/tour-images.module';
 import { PaymentModule } from './payments/payment.module';
 import { TransportModule } from './transports/transport.module';
 import { TransportBookingModule } from './transport-bookings/transport-booking.module';
+import { GuideBookingModule } from './guide-booking/guide-booking.module';
+import { TourReviewsModule } from './tour-reviews/tour-review.module';
+import { TouristsService } from './tourist-profiles/tourist.service';
+import { TouristsModule } from './tourist-profiles/tourist.module';
 
 @Module({
   imports: [
@@ -60,7 +64,10 @@ import { TransportBookingModule } from './transport-bookings/transport-booking.m
     TourImagesModule,
     PaymentModule,
     TransportModule,
-    TransportBookingModule
+    TransportBookingModule,
+    GuideBookingModule,
+    TourReviewsModule,
+    TouristsModule
   ],
 
   providers: [

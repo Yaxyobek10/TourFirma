@@ -1,0 +1,8 @@
+export enum TourType {
+  ECO = 'ECO',
+  RELIGIOUS = 'RELIGIOUS',
+  BEACH = 'BEACH',
+  CULTURAL = 'CULTURAL',
+  MOUNTAIN = 'MOUNTAIN',
+  ADVENTURE = 'ADVENTURE',
+}

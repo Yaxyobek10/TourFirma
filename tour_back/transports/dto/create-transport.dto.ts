@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsInt, IsNumber, IsArray, IsOptional, IsString, Min, MinLength } from 'class-validator';
-import { TransportType, TransportCurrency, TransportCategory } from '../entities/transport-entity';
+import { Transport, TransportCurrency, TransportCategory } from '../entities/transport.entity';
+import { TransportType } from '../../common/enum/transport-type.enum';
 
 export class CreateTransportDto {
   @ApiProperty({ example: 'Mercedes S-Class 2025' })

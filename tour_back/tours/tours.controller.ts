@@ -9,16 +9,17 @@ import {
   ParseIntPipe,
   UseGuards,
   Req,
+  Query,
 } from '@nestjs/common';
-import { ApiTags, ApiBody, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiBody, ApiParam, ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { ToursService } from './tours.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
-import { UpdateTourAdminDto } from './dto/update-tour.admin.dto';
-import { JwtAuthGuard } from 'tour_back/auth/jwt-auth.guard';
-import { RolesGuard } from 'tour_back/auth/roles.guard';
-import { Roles } from 'tour_back/auth/roles.decarator';
-import { UserRole } from 'tour_back/users/entities/user.entity';
+import { UpdateTourAdminDto } from './dto/update-tour-admin.dto';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../common/enum/user-role.enum';
 
 @ApiTags('Tours')
 @ApiBearerAuth()
@@ -27,10 +28,24 @@ import { UserRole } from 'tour_back/users/entities/user.entity';
 export class ToursController {
   constructor(private readonly toursService: ToursService) {}
 
-  @Get()
-  getAllTours() {
-    return this.toursService.findAll();
+ @Get()
+  @Roles(UserRole.GUIDE, UserRole.TOURFIRMA)
+  @ApiOperation({ summary: 'Get all tours (with optional filters)' })
+  @ApiQuery({ name: 'page', required: false, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, example: 10 })
+  @ApiQuery({ name: 'title', required: false, example: 'Dubai' })
+  @ApiQuery({ name: 'isMyTours', required: false, example: 'true' })
+  getAllTours(
+    @Req() req: any,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('title') title?: string,
+    @Query('isMyTours') isMyTours?: string,
+  ) {
+    const userId = req.user?.id;
+    return this.toursService.findAll({ page, limit, title, isMyTours, userId });
   }
+
 
 
   @Get(':id')
@@ -41,14 +56,14 @@ export class ToursController {
 
 
   @Get('pending')
-  @Roles(UserRole.ADMIN)
+  @Roles(UserRole.GUIDE, UserRole.TOURFIRMA)
   getPendingTours() {
     return this.toursService.findPending();
   }
 
   
   @Post()
-  @Roles(UserRole.TOURFIRMA)
+  @Roles(UserRole.GUIDE, UserRole.TOURFIRMA)
   @ApiBody({ type: CreateTourDto })
   createTour(@Body() body: CreateTourDto, @Req() req) {
     return this.toursService.create(body, req.user.id);

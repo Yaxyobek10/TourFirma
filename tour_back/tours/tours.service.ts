@@ -3,14 +3,15 @@ import {
   NotFoundException,
   BadRequestException,
   ForbiddenException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { Tour } from './entities/tour.entity';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
-import { UpdateTourAdminDto } from './dto/update-tour.admin.dto';
-import { TourFirmaProfile } from '../tourfirma/entities/tourfirma-entity';
+import { UpdateTourAdminDto } from './dto/update-tour-admin.dto';
+import { TourFirmaProfile } from '../tourfirma/entities/tourfirma.entity';
 
 @Injectable()
 export class ToursService {
@@ -26,6 +27,7 @@ async create(tourData: CreateTourDto, userId: number) {
   const profileRepo = this.dataSource.getRepository(TourFirmaProfile);
   const profile = await profileRepo.findOne({
     where: { user: { id: userId } },
+    relations: ['user'],
   });
   if (!profile) {
     throw new BadRequestException(
@@ -35,38 +37,81 @@ async create(tourData: CreateTourDto, userId: number) {
     throw new ForbiddenException(
       'Your tourfirma profile is not verified yet. You cannot create tours until admin verifies your profile.');
   }
+  const now = new Date();
+  if (new Date(tourData.startDate) < now) {
+    throw new BadRequestException('Start date cannot be in the past.');
+  }
   if (new Date(tourData.startDate) >= new Date(tourData.endDate)) {
-    throw new BadRequestException('Start date must be earlier than end date');
+    throw new BadRequestException('Start date must be earlier than end date.');
   }
   if (tourData.price <= 0) {
-    throw new BadRequestException('Price must be greater than 0');
+    throw new BadRequestException('Price must be greater than 0.');
   }
   if (!tourData.currency) {
-    throw new BadRequestException('Currency is required');
+    throw new BadRequestException('Currency is required.');
   }
-  const availableSlots = tourData.availableSlots ?? tourData.maxPeople;
-  if (availableSlots <= 0) {
-    throw new BadRequestException('Available slots must be greater than 0');
+  const availableSlots =
+    tourData.availableSlots && tourData.availableSlots > 0
+      ? tourData.availableSlots
+      : tourData.maxPeople;
+  if (availableSlots > tourData.maxPeople) {
+    throw new BadRequestException(
+      'Available slots cannot exceed maximum people limit.');
   }
-  const newTour = this.tourRepo.create({
-    ...tourData,
-    tourFirma: profile,
-    availableSlots,
-    isActive: availableSlots > 0,
-  });
-  return await this.tourRepo.save(newTour);
+  try {
+    const newTour = this.tourRepo.create({
+      ...tourData,
+      availableSlots,
+      tourFirma: profile,
+      isActive: availableSlots > 0,
+    });
+    return await this.tourRepo.save(newTour);
+  } catch (error) {
+    console.error('Error creating tour:', error);
+    throw new InternalServerErrorException('Failed to create tour.');
+  }
 }
 
 
 
   /** GET ALL ACTIVE TOURS */
-  async findAll() {
-    return await this.tourRepo.find({
-      relations: ['tourFirma'],
-      where: { isActive: true },
-      withDeleted: false,
+async findAll({
+  page = 1,
+  limit = 10,
+  title,
+  isMyTours,
+  userId,
+}: {
+  page?: number;
+  limit?: number;
+  title?: string;
+  isMyTours?: string;
+  userId?: number;
+}) {
+  const query = this.tourRepo
+    .createQueryBuilder('tour')
+    .leftJoinAndSelect('tour.tourFirma', 'tourFirma')
+    .where('tour.isActive = :active', { active: true });
+  if (isMyTours === 'true' && userId) {
+    query.andWhere('tourFirma.userId = :userId', { userId });
+  }
+  if (title) {
+    query.andWhere('LOWER(tour.title) LIKE LOWER(:title)', {
+      title: `%${title}%`,
     });
   }
+  const skip = (page - 1) * limit;
+  query.skip(skip).take(limit);
+  const [data, total] = await query.getManyAndCount();
+  return {
+    page: Number(page),
+    limit: Number(limit),
+    total,
+    totalPages: Math.ceil(total / limit),
+    data,
+  };
+}
+
 
 
 

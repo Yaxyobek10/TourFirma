@@ -13,7 +13,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true, 
       transform: true, 
     }), );
-
+    
 
 
     const config = new DocumentBuilder()
@@ -24,7 +24,11 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document); 
+  SwaggerModule.setup('api/docs', app, document, {
+    swaggerOptions: {
+      persistAuthorization: true,
+    },
+  }); 
 
 
   app.enableCors({

@@ -12,13 +12,9 @@ import {
 import { User } from '../../users/entities/user.entity';
 import { Tour } from '../../tours/entities/tour.entity';
 import { BookingHistory } from './booking-history.entity';
+import { BookingStatus } from '../../common/enum/booking-status.enum';
 
-export enum BookingStatus {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  CANCELLED = 'cancelled',
-  COMPLETED = 'completed',
-}
+
 
 @Entity('bookings')
 export class Booking {
@@ -34,7 +30,7 @@ export class Booking {
   tour: Tour;
 
   
-  @OneToMany(() => BookingHistory, (bookingHistory) => bookingHistory.booking)
+  @OneToMany(() => BookingHistory, (bookingHistory) => bookingHistory.bookingId)
   history: BookingHistory[];
 
 
@@ -68,3 +64,5 @@ export class Booking {
   @UpdateDateColumn()
   updatedAt: Date;
 }
+export { BookingStatus };
+

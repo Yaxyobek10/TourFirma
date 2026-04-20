@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
-import { TransportBooking } from './entities/transport-booking-entity';
-import { Transport } from '../transports/entities/transport-entity';
+import { TransportBooking } from './entities/transport-booking.entity';
+import { Transport } from '../transports/entities/transport.entity';
 import { User } from '../users/entities/user.entity';
-import { TourFirmaProfile } from '../tourfirma/entities/tourfirma-entity';
+import { TourFirmaProfile } from '../tourfirma/entities/tourfirma.entity';
 import { CreateTransportBookingDto } from './dto/create-transport-booking.dto';
-import { TransportBookingItem } from './entities/transport-booking.Item.entity';
+import { TransportBookingItem } from './entities/transport-booking-item.entity';
 
 @Injectable()
 export class TransportBookingService {

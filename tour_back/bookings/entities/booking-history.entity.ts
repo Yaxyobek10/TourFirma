@@ -8,23 +8,11 @@ import {
 } from 'typeorm';
 import { Booking } from "./booking.entity";
 
-export enum BookingAction {
-  CREATED = 'CREATED',
-  UPDATED = 'UPDATED',
-  PAYMENT_CONFIRMED = 'PAYMENT_CONFIRMED',
-  PAYMENT_REFUNDED = 'PAYMENT_REFUNDED',
-  STATUS_CHANGED = 'STATUS_CHANGED',
-  PAYMENT_CREATED = 'PAYMENT_CREATED',
-}
-
 @Entity('booking_history')
 export class BookingHistory {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Booking, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'booking_id' })
-  booking: Booking;
 
   @Column()
   bookingId: number;

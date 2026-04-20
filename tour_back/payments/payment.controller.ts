@@ -22,8 +22,8 @@ import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decarator';
-import { UserRole } from '../users/entities/user.entity';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../common/enum/user-role.enum';
 
 @ApiTags('Payments')
 @ApiBearerAuth()

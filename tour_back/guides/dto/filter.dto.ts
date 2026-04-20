@@ -40,4 +40,9 @@ export class GuideFilterDto {
   @Type(() => Number)
   @Min(1)
   limit?: number = 10;
+
+
+  @IsOptional()
+  @IsString()
+  sortBy?: string
 }

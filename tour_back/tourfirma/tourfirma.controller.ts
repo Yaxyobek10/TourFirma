@@ -14,8 +14,8 @@ import {
 import { ApiTags, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
-import { Roles } from '../auth/roles.decarator';
-import { UserRole } from '../users/entities/user.entity';
+import { Roles } from '../auth/roles.decorator';
+import { UserRole } from '../common/enum/user-role.enum';
 import { TourFirmaService } from './tourfirma.service';
 import { CreateTourFirmaDto } from './dto/create-tourfirma.dto';
 import { UpdateTourFirmaDto } from './dto/update-tourfirma.dto';
@@ -32,13 +32,13 @@ export class TourFirmaController {
 
   // TOURFIRMA ROUTES
   @Get('me')
-  @Roles(UserRole.TOURFIRMA)
+  @Roles(UserRole.TOURFIRMA, UserRole.GUIDE, UserRole.ADMIN, UserRole.TOURIST)
   getMyProfile(@Req() req) {
     return this.service.getByUserId(req.user.id);
   }
 
   @Post()
-  @Roles(UserRole.TOURFIRMA)
+  @Roles(UserRole.GUIDE)
   createProfile(@Body() dto: CreateTourFirmaDto, @Req() req) {
     return this.service.createProfile(dto, req.user.id);
   }
@@ -53,7 +53,7 @@ export class TourFirmaController {
 
 
   @Get()
-  @Roles(UserRole.ADMIN)
+  @Roles(UserRole.GUIDE)
   @Throttle({throttle: {limit: 100, ttl: 60},
 })
   @UseInterceptors(CustomCacheInterceptor)
@@ -64,13 +64,13 @@ export class TourFirmaController {
 
 
   @Patch(':id/verify')
-  @Roles(UserRole.ADMIN)
+  @Roles(UserRole.GUIDE)
   verifyProfile(@Param('id', ParseIntPipe) id: number) {
     return this.service.verifyProfile(id);
   }
 
   @Patch(':id/reject')
-  @Roles(UserRole.ADMIN)
+  @Roles(UserRole.GUIDE)
   @ApiBody({ type: RejectProfileDto })
   rejectProfile(
     @Param('id', ParseIntPipe) id: number,

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { TourFirmaProfile } from './entities/tourfirma-entity';
+import { TourFirmaProfile } from './entities/tourfirma.entity';
 import { CreateTourFirmaDto } from './dto/create-tourfirma.dto';
 import { UpdateTourFirmaDto } from './dto/update-tourfirma.dto';
 import { getPagination } from '../common/utils/pagination.util';
@@ -25,7 +25,8 @@ async findAll(query: any) {
   const { skip, take, page, limit } = getPagination(query);
   const filters = buildFilters(query);
   const qb = this.profileRepo.createQueryBuilder('profile')
-    .leftJoinAndSelect('profile.user', 'user')
+    .leftJoin('profile.user', 'user') 
+    .addSelect(['user.id', 'user.email', 'user.name'])
     .skip(skip)
     .take(take)
     .orderBy('profile.createdAt', 'DESC');

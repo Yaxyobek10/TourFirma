@@ -18,41 +18,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@app/prooducts/*": [
-        "apps/prooducts/src/*"
-      ],
-      "@app/admin/*": [
-        "apps/admin/src/*"
-      ],
-      "@app/catalog/*": [
-        "apps/catalog/src/*"
-      ],
-      "@app/content-manager/*": [
-        "apps/content-manager/src/*"
-      ],
-      "@app/warehouse/*": [
-        "apps/warehouse/src/*"
-      ],
-      "@app/constants": [
-        "libs/constants/src"
-
-    
-      ],
-      "@app/constants/*": [
-        "libs/constants/src/*"                                                                                                        
-
-        
-      ],
-      "@app/dto": [
-        "libs/dto/src"
-      ],
-      "@app/dto/*": [
-        "libs/dto/src/*"
-      ],
-      
-
-    }
   },
 
 }

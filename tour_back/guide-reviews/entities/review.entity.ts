@@ -15,11 +15,21 @@ export class GuideReview {
   id: number;
 
   @Column({ type: 'int', width: 1 })
-  rating: number; // 1-5
+  rating: number; // 1–5
+
+  @Column({ type: 'varchar', length: 100, nullable: true })
+  title?: string;
 
   @Column({ type: 'text', nullable: true })
   comment?: string;
 
+  @Column({ type: 'text', array: true, nullable: true })
+  images?: string[];
+
+  @Column({ type: 'int', default: 0 })
+  likes: number;
+
+  /** Aloqalar */
   @ManyToOne(() => Guide, (guide) => guide.reviews, { onDelete: 'CASCADE' })
   guide: Guide;
 
