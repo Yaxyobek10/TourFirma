@@ -209,6 +209,10 @@ git commit -m "Update CaseLink platform"
 git push origin master
 ```
 
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for the production roadmap and next sprint priorities.
+
 ## Notes
 
 - Do not commit real production secrets to GitHub.

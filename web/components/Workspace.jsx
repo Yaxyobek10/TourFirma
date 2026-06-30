@@ -300,7 +300,7 @@ function AuthPage({ onAuth, toast }) {
         <div className="authCopy">
           <p className="overline">Travel agency SaaS</p>
           <h1>Tour paketdan leadgacha bitta professional workspace.</h1>
-          <p>Agent taklifni yidi, mijoz public sahifada kadi, leadlar esa CRMga tushadi.</p>
+          <p>Agent taklifni yigadi, mijoz public sahifada koradi, leadlar esa CRMga tushadi.</p>
         </div>
         <div className="authProofGrid">
           <span>SSR public offers</span><span>Package builder</span><span>Lead inbox</span>
@@ -358,7 +358,7 @@ function LaunchSteps({ steps }) {
 }
 
 function PackageList({ packages, onEdit, onPublish }) {
-  return <section className="panel"><PanelTitle title="Recent packages" text="Oxirgi tayyorlangan takliflar" />{packages.length ? <div className="listRows">{packages.map((pkg) => <PackageRow key={pkg.id} pkg={pkg} onEdit={onEdit} onPublish={onPublish} />)}</div> : <EmptyState title="Hali package y" text="Birinchi taklifni builder orqali yarating." />}</section>;
+  return <section className="panel"><PanelTitle title="Recent packages" text="Oxirgi tayyorlangan takliflar" />{packages.length ? <div className="listRows">{packages.map((pkg) => <PackageRow key={pkg.id} pkg={pkg} onEdit={onEdit} onPublish={onPublish} />)}</div> : <EmptyState title="Hali package yoq" text="Birinchi taklifni builder orqali yarating." />}</section>;
 }
 
 function RecentLeads({ leads, packages }) {
@@ -366,7 +366,7 @@ function RecentLeads({ leads, packages }) {
 }
 
 function PackageCatalog({ packages, onCreate, onEdit, onPublish }) {
-  return <section className="panel"><div className="panelHead"><PanelTitle title="Package catalog" text="Barcha takliflar, status va performance" /><button className="primaryButton" onClick={onCreate}>New package</button></div>{packages.length ? <div className="packageCards">{packages.map((pkg) => <PackageRow key={pkg.id} pkg={pkg} onEdit={onEdit} onPublish={onPublish} />)}</div> : <EmptyState title="Catalog bh" text="Yangi tour paket yaratib, mijozga public link yuboring." />}</section>;
+  return <section className="panel"><div className="panelHead"><PanelTitle title="Package catalog" text="Barcha takliflar, status va performance" /><button className="primaryButton" onClick={onCreate}>New package</button></div>{packages.length ? <div className="packageCards">{packages.map((pkg) => <PackageRow key={pkg.id} pkg={pkg} onEdit={onEdit} onPublish={onPublish} />)}</div> : <EmptyState title="Catalog bosh" text="Yangi tour paket yaratib, mijozga public link yuboring." />}</section>;
 }
 
 function PackageRow({ pkg, onEdit, onPublish }) {
@@ -423,7 +423,7 @@ function SelectedSummary({ selectedPackage }) {
 }
 
 function PublicPreview({ selectedPackage }) {
-  return <section className="phonePreview"><div className="phoneChrome" />{selectedPackage ? <><div className="phoneHero" style={{ backgroundImage: `url(${firstImage(selectedPackage)})` }} /><div className="phoneBody"><span>{selectedPackage.destination || 'Travel offer'}</span><h3>{selectedPackage.title}</h3><p>{selectedPackage.description || 'Tour package description'}</p><strong>{money(selectedPackage.price, selectedPackage.currency)}</strong><a href={publicUrl(selectedPackage.slug)} target="_blank">Open public page</a></div></> : <div className="phoneEmpty"><strong>Preview</strong><p>Package yaratilgandan keyin public kinish chiqadi.</p></div>}</section>;
+  return <section className="phonePreview"><div className="phoneChrome" />{selectedPackage ? <><div className="phoneHero" style={{ backgroundImage: `url(${firstImage(selectedPackage)})` }} /><div className="phoneBody"><span>{selectedPackage.destination || 'Travel offer'}</span><h3>{selectedPackage.title}</h3><p>{selectedPackage.description || 'Tour package description'}</p><strong>{money(selectedPackage.price, selectedPackage.currency)}</strong><a href={publicUrl(selectedPackage.slug)} target="_blank">Open public page</a></div></> : <div className="phoneEmpty"><strong>Preview</strong><p>Package yaratilgandan keyin public korinish chiqadi.</p></div>}</section>;
 }
 
 function BlockList({ selectedPackage }) {
@@ -433,7 +433,7 @@ function BlockList({ selectedPackage }) {
 
 function LeadsView({ leads, packages }) {
   const statuses = ['new', 'contacted', 'won'];
-  return <div className="leadBoard">{statuses.map((status) => <section className="panel" key={status}><PanelTitle title={status} text={`${leads.filter((lead) => lead.status === status).length} leads`} />{leads.filter((lead) => lead.status === status).map((lead) => <article className="leadCard" key={lead.id}><strong>{lead.clientName || lead.phone || 'Client'}</strong><p>{packages.find((pkg) => pkg.id === lead.packageId)?.title || lead.source || 'Public offer'}</p><small>{lead.phone || lead.email || '-'}</small></article>)}{!leads.filter((lead) => lead.status === status).length && <EmptyState title="Bh" text="Bu statusda lead y." />}</section>)}</div>;
+  return <div className="leadBoard">{statuses.map((status) => <section className="panel" key={status}><PanelTitle title={status} text={`${leads.filter((lead) => lead.status === status).length} leads`} />{leads.filter((lead) => lead.status === status).map((lead) => <article className="leadCard" key={lead.id}><strong>{lead.clientName || lead.phone || 'Client'}</strong><p>{packages.find((pkg) => pkg.id === lead.packageId)?.title || lead.source || 'Public offer'}</p><small>{lead.phone || lead.email || '-'}</small></article>)}{!leads.filter((lead) => lead.status === status).length && <EmptyState title="Bosh" text="Bu statusda lead yoq." />}</section>)}</div>;
 }
 
 function Settings({ agency, onSubmit, launchSteps, readiness }) {
