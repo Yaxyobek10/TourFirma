@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToOne,
   JoinColumn,
 } from 'typeorm';
 import { Tour } from '../../tours/entities/tour.entity';
@@ -12,6 +13,7 @@ import { Booking } from '../../bookings/entities/booking.entity';
 import { UserRole } from '../../common/enum/user-role.enum';
 import { Exclude } from 'class-transformer';
 import { Tourist } from '../../tourist-profiles/entities/tourist.entity';
+import { Agency } from '../../agencies/entities/agency.entity';
 
 
 @Entity({ name: 'users' })
@@ -19,16 +21,15 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column({ nullable: true })
+  name?: string;
 
-  @Column({ unique: true })
-  email: string;
-
+  @Column({ unique: true, nullable: true })
+  email?: string;
 
   @Exclude()
-  @Column({ select: false })
-  password: string;
+  @Column({ select: false, nullable: true })
+  password?: string;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.TOURIST })
   role: UserRole;
@@ -55,10 +56,13 @@ export class User {
   @OneToMany(() => Tourist, (tourist) => tourist.user)
   @JoinColumn()
   tourists: Tourist[];
-
+  @ManyToOne(() => Agency, (agency) => agency.users, { nullable: true, onDelete: 'SET NULL' })
+  agency?: Agency;
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp' })
   updatedAt: Date;
 }
+
+

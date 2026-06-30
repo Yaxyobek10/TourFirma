@@ -12,6 +12,7 @@ services:
       - backend_5005
     volumes:
       - db_data_5005:/var/lib/postgresql/data
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
       interval: 2s
@@ -32,12 +33,12 @@ services:
     environment:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_PORT: ${DB_PORT}
-      DB_HOST: ${DB_HOST}
+      DB_PORT: 5432
+      DB_HOST: db
       DB_NAME: ${DB_NAME}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      DATABASE_URL: ${DATABASE_URL}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
     ports:
       - "5005:5005"
     depends_on:
@@ -48,11 +49,15 @@ services:
     networks:
       - backend_5005
 
+
+
 networks:
   backend_5005:
     driver: bridge
 
 volumes:
   db_data_5005:
+
+
 
 

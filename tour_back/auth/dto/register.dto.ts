@@ -6,32 +6,10 @@ import {
   MinLength,
   IsOptional,
   IsString,
-  ValidateIf,
-  ValidationArguments,
-  registerDecorator,
-  ValidationOptions,
 } from 'class-validator';
 import { UserRole } from '../../common/enum/user-role.enum';
 
 
-function IsAllowedRole(allowedRoles: UserRole[], validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
-    registerDecorator({
-      name: 'isAllowedRole',
-      target: object.constructor,
-      propertyName,
-      options: validationOptions,
-      validator: {
-        validate(value: any, args: ValidationArguments) {
-          return allowedRoles.includes(value);
-        },
-        defaultMessage(args: ValidationArguments) {
-          return `Role "${args.value}" orqali ro\'yxatdan o\'tish taqiqlangan`;
-        },
-      },
-    });
-  };
-}
 
 export class RegisterDto {
   @ApiProperty({
@@ -58,15 +36,15 @@ export class RegisterDto {
   @IsString()
   @MinLength(6)
   password: string;
-
   @ApiProperty({
-    example: UserRole.GUIDE,
-    description: 'Foydalanuvchi roli (faqat GUIDE yoki TOURIST mumkin)',
+    example: UserRole.OWNER,
+    description: 'Public register paytida role tizim tomonidan avtomatik beriladi',
     enum: UserRole,
+    required: false,
   })
+  @IsOptional()
   @IsEnum(UserRole)
-  @IsAllowedRole([UserRole.GUIDE, UserRole.TOURIST])
-  role: UserRole;
+  role?: UserRole;
 
   @ApiProperty({
     example: '+998901234567',
@@ -85,3 +63,4 @@ export class RegisterDto {
   @IsString()
   avatarUrl?: string;
 }
+

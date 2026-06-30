@@ -24,9 +24,9 @@ import { User } from '../users/entities/user.entity';
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
-  // JwtStrategy endi Keycloak JWKS orqali tokenni tekshiradi
   exports: [AuthService],
 })
 export class AuthModule {}
+
 
 

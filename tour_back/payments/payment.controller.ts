@@ -62,12 +62,9 @@ export class PaymentController {
   @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: '↩️ Refund a payment (Admin only)' })
   @ApiResponse({ status: 200, description: 'Payment refunded successfully' })
-refundPayment(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() body: { reason?: string; adminId: number }
-  ) {
-    return this.paymentService.refundPayment(id, { id: body.adminId, role: UserRole.ADMIN }); 
- }
+refundPayment(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    return this.paymentService.refundPayment(id, req.user);
+  }
 
 
 
@@ -93,18 +90,7 @@ refundPayment(
   @Get()
   @ApiOperation({ summary: '📜 Get all payments for logged-in user' })
   findAll(@Req() req) {
-    return this.paymentService.findAll(req.user.id);
-  }
-
-
-
-
-
-
-  @Get(':id')
-  @ApiOperation({ summary: '🔍 Get a single payment by ID' })
-  findOne(@Param('id', ParseIntPipe) id: number, @Req() req) {
-    return this.paymentService.findOne(id, req.user.id);
+    return this.paymentService.findAll(req.user);
   }
 
 
@@ -120,11 +106,25 @@ refundPayment(
     return this.paymentService.getPaymentHistory(+id, req.user);
   }
 
+
+  @Get(':id')
+  @ApiOperation({ summary: '🔍 Get a single payment by ID' })
+  findOne(@Param('id', ParseIntPipe) id: number, @Req() req) {
+    return this.paymentService.findOne(id, req.user);
+  }
+
+
+
+
+
   
 
 
   
 }
+
+
+
 
 
 

@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { GuideBooking } from "./entity/guide-booking.entity";
+import { GuideBooking } from "./entities/guide-booking.entity";
 import { GuideBookingsController } from "./guide-booking.controller";
 import { GuideBookingsService } from "./guide-booking.service";
 import { Guide } from "../guides/entities/guide.entity";

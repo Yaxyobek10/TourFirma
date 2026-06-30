@@ -39,7 +39,7 @@ export class TransportBookingController {
 
   /** GET ALL BOOKINGS OF CURRENT USER */
   @Get()
-  @Roles(UserRole.TOURIST || UserRole.TOURFIRMA)
+  @Roles(UserRole.TOURIST, UserRole.TOURFIRMA)
   async findAll(@Req() req) {
     return this.bookingService.findAll(req.user.id);
   }
@@ -49,7 +49,7 @@ export class TransportBookingController {
 
   /** GET ONE BOOKING BY ID (ONLY OWNER) */
   @Get(':id')
-  @Roles(UserRole.TOURIST  || UserRole.TOURFIRMA)
+  @Roles(UserRole.TOURIST, UserRole.TOURFIRMA)
   @ApiParam({ name: 'id', type: Number, description: 'Booking ID' })
   async findOne(@Param('id', ParseIntPipe) id: number, @Req() req) {
     return this.bookingService.findOne(id, req.user.id);
@@ -66,3 +66,4 @@ export class TransportBookingController {
     return this.bookingService.remove(id, req.user.id);
   }
 }
+

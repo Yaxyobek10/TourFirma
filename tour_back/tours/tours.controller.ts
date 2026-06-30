@@ -47,6 +47,12 @@ export class ToursController {
   }
 
 
+  @Get('pending')
+  @Roles(UserRole.GUIDE, UserRole.TOURFIRMA)
+  getPendingTours() {
+    return this.toursService.findPending();
+  }
+
 
   @Get(':id')
   @ApiParam({ name: 'id', type: Number, example: 1 })
@@ -54,12 +60,6 @@ export class ToursController {
     return this.toursService.findOne(id);
   }
 
-
-  @Get('pending')
-  @Roles(UserRole.GUIDE, UserRole.TOURFIRMA)
-  getPendingTours() {
-    return this.toursService.findPending();
-  }
 
   
   @Post()
@@ -119,6 +119,7 @@ toggleTourActive(
 }
 
 }
+
 
 
 

@@ -78,7 +78,7 @@ async findAll(
 
   /** GET ONE TRANSPORT */
   @Get(':id')
-  @Roles(UserRole.TOURFIRMA || UserRole.TOURIST)
+  @Roles(UserRole.TOURFIRMA, UserRole.TOURIST)
   @ApiParam({ name: 'id', type: Number })
   async findOne(@Param('id', ParseIntPipe) id: number, @Req() req) {
     return this.transportService.findOne(id, req.user.id);
@@ -108,4 +108,5 @@ async findAll(
     return this.transportService.remove(id, req.user.id);
   }
 }
+
 

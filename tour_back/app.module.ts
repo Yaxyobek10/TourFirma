@@ -20,6 +20,9 @@ import { GuideBookingModule } from './guide-booking/guide-booking.module';
 import { TourReviewsModule } from './tour-reviews/tour-review.module';
 import { TouristsService } from './tourist-profiles/tourist.service';
 import { TouristsModule } from './tourist-profiles/tourist.module';
+import { AgenciesModule } from './agencies/agencies.module';
+import { CaselinkPackagesModule } from './caselink-packages/caselink-packages.module';
+import { LeadsModule } from './leads/leads.module';
 
 @Module({
   imports: [
@@ -67,7 +70,10 @@ import { TouristsModule } from './tourist-profiles/tourist.module';
     TransportBookingModule,
     GuideBookingModule,
     TourReviewsModule,
-    TouristsModule
+    TouristsModule,
+    AgenciesModule,
+    CaselinkPackagesModule,
+    LeadsModule
   ],
 
   providers: [
@@ -78,3 +84,4 @@ import { TouristsModule } from './tourist-profiles/tourist.module';
   ],
 })
 export class AppModule {}
+

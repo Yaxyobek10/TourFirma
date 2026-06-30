@@ -4,27 +4,22 @@ import {
   ConflictException,
   InternalServerErrorException,
   NotFoundException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/user.entity';
 import { UserRole } from '../common/enum/user-role.enum';
-import { GuidesService } from '../guides/guides.service';
 import { DataSource, Repository } from 'typeorm';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { RegisterDto } from './dto/register.dto';
-import { TouristsService } from '../tourist-profiles/tourist.service';
 import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
   constructor(  
     private readonly usersService: UsersService,
-    private readonly guidesService: GuidesService,
     private readonly jwtService: JwtService,
-    private readonly touristsService: TouristsService,
     private readonly dataSource: DataSource,
    @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -50,9 +45,10 @@ export class AuthService {
 
 
 
-  // 🔹 REGISTER
+  // REGISTER
 async register(data: RegisterDto) {
-  const { email, phone, role, password, name, avatarUrl } = data;
+  const { email, phone, password, name, avatarUrl } = data;
+  const role = UserRole.OWNER;
   if (!email && !phone)
     throw new ConflictException('Email or phone is required');
   const existing = await this.userRepository
@@ -63,10 +59,6 @@ async register(data: RegisterDto) {
 
   if (existing)
     throw new ConflictException('This email or phone is already taken');
-
-  if (![UserRole.GUIDE, UserRole.TOURIST].includes(role)) {
-    throw new ForbiddenException('You cannot register with this role');
-  }
 
   const queryRunner = this.dataSource.createQueryRunner();
   await queryRunner.connect();
@@ -86,28 +78,6 @@ async register(data: RegisterDto) {
 
     await queryRunner.manager.save(user);
 
-    if (role === UserRole.GUIDE) {
-      const guideProfile = this.guidesService.buildGuideEntity({
-        name: user.name,
-        phone: user.phone,
-        avatarUrl: user.avatarUrl,
-        price: 0,
-        bio: '',
-        schedule: '',
-        availableSeats: 0,
-        userId: user.id,
-      });
-      await queryRunner.manager.save(guideProfile);
-    } else if (role === UserRole.TOURIST) {
-      const touristProfile = this.touristsService.buildTouristEntity({
-        name: user.name,
-        phone: user.phone,
-        avatarUrl: user.avatarUrl,
-        userId: user.id,
-      });
-      await queryRunner.manager.save(touristProfile);
-    }
-
     await queryRunner.commitTransaction();
     return this.buildAuthResponse(user);
   } catch (error) {
@@ -126,7 +96,7 @@ async register(data: RegisterDto) {
 
 
 
-  // 🔹 LOGIN
+  // LOGIN
   async login(email: string, password: string) {
     const user = await this.usersService.findByEmail(email);
     if (!user) {
@@ -208,3 +178,4 @@ async register(data: RegisterDto) {
 
 
 }
+

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CaseLink Workspace</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-frame">
+    <aside class="sidebar">
+      <div class="brand-block">
+        <div class="brand-logo">CL</div>
+        <div>
+          <strong>CaseLink</strong>
+          <span>Tour package workspace</span>
+        </div>
+      </div>
+
+      <nav class="side-nav" aria-label="Main navigation">
+        <button class="side-link active" data-view="overview"><span>01</span>Overview</button>
+        <button class="side-link" data-view="packages"><span>02</span>Packages</button>
+        <button class="side-link" data-view="builder"><span>03</span>Builder</button>
+        <button class="side-link" data-view="leads"><span>04</span>Leads</button>
+        <button class="side-link" data-view="settings"><span>05</span>Settings</button>
+      </nav>
+
+      <div class="api-card">
+        <label for="apiBase">Backend API</label>
+        <div class="api-row">
+          <input id="apiBase" value="http://localhost:5005" />
+          <button id="saveApiBase" class="small-button">Save</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="overline" id="viewKicker">CaseLink MVP</p>
+          <h1 id="viewTitle">Overview</h1>
+          <p id="viewSubtitle">Agency, package, click va leadlarni bir joyda boshqaring.</p>
+        </div>
+        <div class="session-area">
+          <span id="agencyBadge" class="pill neutral">No agency</span>
+          <span id="sessionBadge" class="pill neutral">Guest</span>
+          <button id="logoutBtn" class="icon-button" title="Logout">Out</button>
+        </div>
+      </header>
+
+      <section id="authPanel" class="login-wall">
+        <div class="login-visual">
+          <div class="visual-content">
+            <p class="overline">SaaS for travel agents</p>
+            <h2>Turpaketni yig‘ing, link bering, click va leadni ko‘ring.</h2>
+            <p>Bu kabinet backenddagi CaseLink API bilan ishlaydi. Avval akkaunt oching, keyin agency va birinchi paketni yarating.</p>
+          </div>
+        </div>
+        <div class="login-forms">
+          <form id="loginForm" class="card form-stack">
+            <div class="card-title">
+              <h2>Login</h2>
+              <span class="pill">Existing</span>
+            </div>
+            <label>Email<input name="email" type="email" placeholder="owner@agency.uz" required /></label>
+            <label>Password<input name="password" type="password" placeholder="Minimum 6 symbols" required /></label>
+            <button class="primary-button" type="submit">Login</button>
+          </form>
+
+          <form id="registerForm" class="card form-stack">
+            <div class="card-title">
+              <h2>Register</h2>
+              <span class="pill blue">New agency</span>
+            </div>
+            <label>Name<input name="name" placeholder="Malika Rahimova" required /></label>
+            <label>Email<input name="email" type="email" placeholder="malika@sunrise.uz" required /></label>
+            <label>Phone<input name="phone" placeholder="+998 90 123 45 67" /></label>
+            <label>Password<input name="password" type="password" minlength="6" required /></label>
+            <label>Role<select name="role"><option value="owner">Owner</option><option value="manager">Manager</option><option value="viewer">Viewer</option></select></label>
+            <button class="secondary-button" type="submit">Create account</button>
+          </form>
+        </div>
+      </section>
+
+      <section id="overviewView" class="view active-view">
+        <div class="metric-grid">
+          <article class="metric-card"><span>Total packages</span><strong id="metricPackages">0</strong><small id="metricDrafts">0 drafts</small></article>
+          <article class="metric-card"><span>Real clicks</span><strong id="metricClicks">0</strong><small>Bot clicks are filtered</small></article>
+          <article class="metric-card"><span>Incoming leads</span><strong id="metricLeads">0</strong><small id="metricNewLeads">0 new</small></article>
+          <article class="metric-card"><span>Published</span><strong id="metricPublished">0</strong><small>Ready public links</small></article>
+        </div>
+
+        <div class="content-grid overview-grid">
+          <section class="card large-card">
+            <div class="card-title">
+              <div><h2>Package pipeline</h2><p>Oxirgi yaratilgan paketlar va ularning holati.</p></div>
+              <button id="refreshBtn" class="small-button">Refresh</button>
+            </div>
+            <div id="packageList" class="package-list empty-state">No packages yet</div>
+          </section>
+
+          <section class="card insight-card">
+            <div class="card-title"><h2>Selected package</h2><span id="selectedStatus" class="pill neutral">None</span></div>
+            <div id="selectedSummary" class="selected-summary empty-state">Paket tanlang yoki yangi paket yarating.</div>
+          </section>
+        </div>
+      </section>
+
+      <section id="packagesView" class="view">
+        <div class="section-head">
+          <div><h2>Packages</h2><p>Agent kabinetidagi barcha paketlar.</p></div>
+          <button id="newPackageBtn" class="primary-button">New package</button>
+        </div>
+        <div id="packageTable" class="data-table empty-state">No package data</div>
+      </section>
+
+      <section id="builderView" class="view">
+        <div class="builder-shell">
+          <section class="card builder-form-card">
+            <div class="card-title">
+              <div><h2 id="packageFormTitle">New package</h2><p>Base information</p></div>
+              <button id="resetPackageBtn" type="button" class="small-button">Clear</button>
+            </div>
+            <form id="packageForm" class="form-stack">
+              <label>Title<input name="title" placeholder="Antalya Rixos 5 nights" required /></label>
+              <label>Description<textarea name="description" placeholder="Clientga ko‘rinadigan qisqa tavsif"></textarea></label>
+              <div class="field-grid two">
+                <label>Price<input name="price" type="number" min="0" step="0.01" placeholder="1200" required /></label>
+                <label>Currency<select name="currency"><option>UZS</option><option>USD</option><option>EUR</option></select></label>
+              </div>
+              <div class="field-grid two">
+                <label>Start date<input name="startDate" type="date" /></label>
+                <label>End date<input name="endDate" type="date" /></label>
+              </div>
+              <label>Cover image URL<input name="coverImage" placeholder="https://..." /></label>
+              <label>Slug<input name="slug" placeholder="antalya-rixos-5n" /></label>
+              <button class="primary-button" type="submit">Save package</button>
+            </form>
+          </section>
+
+          <section class="card block-card">
+            <div class="card-title">
+              <div><h2>Content blocks</h2><p>Client sahifasidagi tartiblangan bloklar.</p></div>
+              <button id="publishBtn" class="secondary-button">Publish</button>
+            </div>
+            <form id="blockForm" class="block-editor">
+              <div class="field-grid three">
+                <label>Type<select name="type" id="blockType"><option value="hotel">Hotel</option><option value="flight">Flight</option><option value="youtube">YouTube</option><option value="gallery">Gallery</option><option value="map">Map</option><option value="document">Document</option><option value="link">Link</option><option value="included">Included</option><option value="program">Program</option><option value="note">Note</option><option value="reviews">Reviews</option></select></label>
+                <label>Order<input name="order" type="number" min="0" placeholder="Auto" /></label>
+                <label class="checkbox-field"><input name="visibleToClient" type="checkbox" checked />Visible</label>
+              </div>
+              <label>Data JSON<textarea name="data" spellcheck="false"></textarea></label>
+              <label>Preview JSON<textarea name="preview" spellcheck="false"></textarea></label>
+              <button class="secondary-button" type="submit">Add block</button>
+            </form>
+            <div id="blockList" class="block-list empty-state">Package tanlang yoki yarating.</div>
+          </section>
+
+          <section class="card publish-card">
+            <div class="card-title"><h2>Public preview</h2><button id="copyPublicLink" class="small-button">Copy link</button></div>
+            <div id="publicPreview" class="public-preview empty-preview"></div>
+          </section>
+        </div>
+
+        <section class="card tracking-section">
+          <div class="card-title">
+            <div><h2>Source links</h2><p>Instagram, Telegram, Facebook va custom kampaniyalar.</p></div>
+            <form id="trackingForm" class="inline-form">
+              <select name="source"><option value="instagram">Instagram</option><option value="telegram">Telegram</option><option value="facebook">Facebook</option><option value="custom">Custom</option></select>
+              <input name="label" placeholder="Campaign label" />
+              <button class="small-button" type="submit">Create</button>
+            </form>
+          </div>
+          <div id="trackingList" class="tracking-list empty-state">Tracking links yo‘q</div>
+        </section>
+      </section>
+
+      <section id="leadsView" class="view">
+        <div class="section-head">
+          <div><h2>Lead inbox</h2><p>Public sahifadan kelgan arizalar.</p></div>
+          <button id="refreshLeadsBtn" class="small-button">Refresh</button>
+        </div>
+        <div id="leadList" class="lead-board empty-state">Leadlar hali yo‘q</div>
+      </section>
+
+      <section id="settingsView" class="view">
+        <div class="settings-grid">
+          <form id="agencyForm" class="card form-stack">
+            <div class="card-title"><div><h2>Agency profile</h2><p>Public sahifalarda ishlatiladigan brand ma’lumotlari.</p></div><span id="agencyStatus" class="pill neutral">Not created</span></div>
+            <label>Agency name<input name="name" placeholder="Sunrise Travel" required /></label>
+            <label>Slug<input name="slug" placeholder="sunrise" required /></label>
+            <label>Logo URL<input name="logoUrl" placeholder="https://..." /></label>
+            <label>Accent color<input name="accentColor" placeholder="#0f766e" /></label>
+            <div class="field-grid two">
+              <label>Phone<input name="contactPhone" placeholder="+998 90 123 45 67" /></label>
+              <label>Telegram<input name="contactTelegram" placeholder="@sunrisetravel" /></label>
+            </div>
+            <button class="primary-button" type="submit">Save agency</button>
+          </form>
+
+          <section class="card checklist-card">
+            <div class="card-title"><h2>Launch checklist</h2></div>
+            <div id="launchChecklist" class="checklist"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="./app.js"></script>
+</body>
+</html>
