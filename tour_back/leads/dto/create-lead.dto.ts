@@ -1,5 +1,7 @@
 import { ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsDateString, IsEmail, IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { LeadIntent } from '../entities/lead.entity';
 
 export class CreateLeadDto {
   @ApiPropertyOptional({ example: 'Ali Karimov' })
@@ -26,6 +28,28 @@ export class CreateLeadDto {
   @IsOptional()
   @IsString()
   source?: string;
+
+  @ApiPropertyOptional({ enum: LeadIntent, example: LeadIntent.BOOKING })
+  @IsOptional()
+  @IsEnum(LeadIntent)
+  intent?: LeadIntent;
+
+  @ApiPropertyOptional({ example: 2 })
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  pax?: number;
+
+  @ApiPropertyOptional({ example: '2026-08-20' })
+  @IsOptional()
+  @IsDateString()
+  preferredDate?: string;
+
+  @ApiPropertyOptional({ example: 'telegram' })
+  @IsOptional()
+  @IsString()
+  preferredContact?: string;
 
   @ApiPropertyOptional({ example: 'antalya-rixos-instagram' })
   @IsOptional()

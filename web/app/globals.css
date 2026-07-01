@@ -222,3 +222,52 @@ input:focus, textarea:focus, select:focus { border-color: var(--primary); box-sh
   h1 { font-size: 28px; }
   .authCopy h1 { font-size: 38px; }
 }
+/* Booking flow */
+.bookingPrice p { margin: 6px 0 0; color: var(--muted); line-height: 1.45; }
+.bookingForm { display: grid; gap: 12px; }
+.bookingTitle { border: 1px solid var(--line); border-radius: 12px; padding: 13px; background: var(--surface-soft); }
+.bookingTitle span { color: var(--primary); font-size: 11px; font-weight: 950; text-transform: uppercase; }
+.bookingTitle strong { display: block; margin-top: 5px; font-size: 18px; }
+.bookingTitle p { margin: 5px 0 0; color: var(--muted); line-height: 1.4; }
+.formTwo { display: grid; grid-template-columns: 1fr 110px; gap: 10px; }
+.leadTop { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.leadMeta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.leadMeta span { border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; color: var(--muted); font-size: 12px; background: var(--surface-soft); }
+.leadMessage { border-left: 3px solid var(--primary); padding-left: 10px; }
+.leadActions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
+
+@media (max-width: 680px) {
+  .formTwo, .leadMeta { grid-template-columns: 1fr; }
+}
+/* Public missing offer */
+.missingOffer { min-height: calc(100vh - 44px); display: grid; align-content: center; gap: 22px; padding: 34px; border: 1px solid var(--line); border-radius: 18px; background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 34%), #fff; box-shadow: var(--shadow); }
+.missingOffer h1 { max-width: 760px; margin: 12px 0 10px; font-size: clamp(34px, 6vw, 64px); line-height: 0.98; }
+.missingOffer p { max-width: 720px; color: var(--muted); line-height: 1.6; }
+.missingSteps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.missingSteps div { border: 1px solid var(--line); border-radius: 14px; padding: 16px; background: var(--surface-soft); }
+.missingSteps span { width: 30px; height: 30px; border-radius: 999px; display: grid; place-items: center; background: var(--primary); color: #fff; font-weight: 950; margin-bottom: 12px; }
+.missingSteps strong { display: block; font-size: 17px; }
+.missingSteps p { margin: 6px 0 0; font-size: 14px; }
+.missingOffer .actionLink { width: fit-content; padding: 0 18px; }
+
+@media (max-width: 760px) {
+  .missingSteps { grid-template-columns: 1fr; }
+  .missingOffer { padding: 22px; }
+}
+/* Settings readiness layout */
+.settingsSide .launchStrip { grid-template-columns: 1fr; gap: 10px; }
+.settingsSide .launchStrip button { min-height: auto; width: 100%; align-items: flex-start; padding: 13px; overflow: hidden; }
+.settingsSide .launchStrip button div { min-width: 0; }
+.settingsSide .launchStrip strong { white-space: normal; overflow-wrap: anywhere; font-size: 15px; line-height: 1.25; }
+.settingsSide .launchStrip small { white-space: normal; overflow-wrap: anywhere; font-size: 12px; line-height: 1.35; }
+.settingsSide .launchStrip button span { width: 30px; height: 30px; }
+.languageSwitch { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,0.92); }
+.languageSwitch button { min-width: 34px; height: 28px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-size: 12px; font-weight: 950; cursor: pointer; }
+.languageSwitch button.active { background: var(--primary); color: #fff; }
+.authPanel .languageSwitch { margin-bottom: 14px; }
+.publicHeroTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.publicLang { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.publicLang a { min-height: 30px; padding: 0 10px; border: 1px solid rgba(255,255,255,0.45); border-radius: 999px; background: rgba(255,255,255,0.14); color: #fff; display: inline-flex; align-items: center; text-decoration: none; font-size: 12px; font-weight: 950; }
+.publicLang a.active { background: #fff; color: var(--ink); border-color: #fff; }
+.missingOffer .publicLang a { border-color: var(--line); color: var(--ink); background: #fff; }
+.missingOffer .publicLang a.active { background: var(--primary); color: #fff; border-color: var(--primary); }

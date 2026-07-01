@@ -177,10 +177,10 @@ Agents can create a package with:
 
 ### Public Pages
 
-Published packages can be opened as public SSR pages:
+Published packages can be opened as public SSR pages. The slug must be a real published package slug, not the placeholder `package-slug`:
 
 ```text
-http://localhost:3000/p/package-slug
+http://localhost:3000/p/real-published-package-slug
 ```
 
 These pages are prepared for Open Graph previews.

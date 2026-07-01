@@ -11,6 +11,11 @@ export enum LeadStatus {
   LOST = 'lost',
 }
 
+export enum LeadIntent {
+  INQUIRY = 'inquiry',
+  BOOKING = 'booking',
+}
+
 @Entity('leads')
 export class Lead {
   @PrimaryGeneratedColumn()
@@ -30,6 +35,18 @@ export class Lead {
 
   @Column({ nullable: true })
   source?: string;
+
+  @Column({ type: 'enum', enum: LeadIntent, default: LeadIntent.INQUIRY })
+  intent: LeadIntent;
+
+  @Column({ type: 'int', nullable: true })
+  pax?: number;
+
+  @Column({ type: 'date', nullable: true })
+  preferredDate?: string;
+
+  @Column({ nullable: true })
+  preferredContact?: string;
 
   @Column({ type: 'enum', enum: LeadStatus, default: LeadStatus.NEW })
   status: LeadStatus;
